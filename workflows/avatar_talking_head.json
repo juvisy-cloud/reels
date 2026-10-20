@@ -1,0 +1,17 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "{{PHOTO}}" }
+  },
+  "3": {
+    "class_type": "ReelsSadTalker",
+    "inputs": {
+      "image": ["1", 0],
+      "audio_file": "{{AUDIO}}",
+      "preprocess": "full",
+      "still": true,
+      "expression_scale": 1.0,
+      "pose_style": 0
+    }
+  }
+}

@@ -1,0 +1,70 @@
+[project]
+name = "reels-studio"
+version = "0.1.0"
+description = "Agente local que genera reels verticales con avatar parlante (ComfyUI + SadTalker + Kokoro)."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "httpx>=0.27",
+    "pillow>=11.0",
+    "python-multipart>=0.0.12",
+    "kokoro-onnx>=0.4",
+    "soundfile>=0.12",
+    "imageio-ffmpeg>=0.5",
+    "av>=13.0",
+]
+
+[project.scripts]
+reels-studio = "reels_studio.interfaces.http.app:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "respx>=0.21",
+    "ruff>=0.7",
+    "mypy>=1.13",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reels_studio"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S", "ANN", "C90", "PL", "SIM", "RET", "PTH", "RUF"]
+ignore = ["PLR0913"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 8
+
+[tool.ruff.lint.pylint]
+max-statements = 30
+max-branches = 8
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "ANN", "PLR2004", "S105", "S106"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+mypy_path = "src"
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["kokoro_onnx.*", "soundfile.*", "imageio_ffmpeg.*", "av.*"]
+ignore_missing_imports = true
